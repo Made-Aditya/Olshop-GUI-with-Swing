@@ -71,7 +71,7 @@ public class TableConfigurator {
      * Metode untuk mengatur lebar kolom di listProdukTable.
      */
     public void setupTableColumnWidths(JTable table) {
-        if (table.getColumnCount() == 0){
+        if (table.getColumnCount() <= 3){
             return;
         }
         // ... (Semua logika setupTableColumnWidths dipindahkan di sini)
@@ -105,9 +105,12 @@ public class TableConfigurator {
         idColumn.setMaxWidth(finalWidth + 20);
 
         TableColumn nameColumn = table.getColumnModel().getColumn(1);
-        nameColumn.setPreferredWidth(600);
+        nameColumn.setPreferredWidth(300);
 
         TableColumn priceColumn = table.getColumnModel().getColumn(2);
-        priceColumn.setPreferredWidth(200);
+        priceColumn.setPreferredWidth(100);
+
+        TableColumn detailColumn = table.getColumnModel().getColumn(3);
+        detailColumn.setPreferredWidth(250);
     }
 }

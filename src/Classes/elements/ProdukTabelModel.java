@@ -14,7 +14,7 @@ public class ProdukTabelModel extends AbstractTableModel {
     private final listProduk dataProduk;
 
     // Array String yang berisi nama-nama kolom tabel (Header).
-    private final String[] columnNames = {"ID", "Nama Produk", "Harga"};
+    private final String[] columnNames = {"ID", "Nama Produk", "Harga", "Detail Spesifik"};
 
     /**
      * Konstruktor untuk model tabel.
@@ -72,36 +72,32 @@ public class ProdukTabelModel extends AbstractTableModel {
         // Langkah 2: Tentukan data mana yang harus dikembalikan berdasarkan kolom (col).
         switch(col){
             case 0:
-                // Kolom 0 (ID)
                 return p.getId_produk();
             case 1:
-                // Kolom 1 (Nama Produk)
                 return p.getNama_produk();
             case 2:
-                // Kolom 2 (Harga)
                 return p.getHarga_produk();
+            case 3:
+                // BARIS BARU: Kolom 3 (Detail Spesifik)
+                // Panggil method abstrak yang sudah diimplementasikan oleh subclass
+                return p.getDeskripsiSingkat();
             default:
                 return null;
         }
     }
 
-    /**
-     * Metode Wajib #5: Memberi tahu JTable Tipe Data apa yang ada di setiap kolom.
-     * Ini PENTING agar JTable tahu bagaimana cara menampilkan dan menyortir data dengan benar
-     * (misalnya, Integer disortir sebagai angka, bukan teks).
-     * @param columnIndex Indeks kolom.
-     * @return Tipe Kelas data di kolom tersebut.
-     */
     @Override
     public Class<?> getColumnClass(int columnIndex){
         switch (columnIndex) {
             case 0:
-                return Integer.class; // ID adalah angka
+                return Integer.class; // ID
             case 1:
-                return String.class;  // Nama Produk adalah teks
+                return String.class;  // Nama Produk
             case 2:
-                // Harga kita simpan sebagai Long (angka besar)
-                return Long.class;
+                return Long.class;    // Harga
+            case 3:
+                // BARIS BARU: Detail Spesifik adalah String
+                return String.class;  // Detail Spesifik adalah String
             default:
                 return Object.class;
         }

@@ -17,7 +17,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
     }
 
     /**
-     * Metode Wajib: Dipanggil oleh JTable setiap kali sel kolom "Aksi" perlu digambar.
+     * Dipanggil oleh JTable setiap kali sel kolom "Aksi" perlu digambar.
      * Metode ini mengambil tombol ini sendiri (this) dan mengatur tampilannya
      * berdasarkan data sel (value) dan status tabel (isSelected, hasFocus).
      * * @param table JTable tempat tombol ini digambar.
