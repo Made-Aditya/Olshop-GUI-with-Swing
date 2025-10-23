@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Classes"},{"l":"Classes.elements"},{"l":"Classes.kelas"},{"l":"Classes.proses"}];updateSearchResults();
