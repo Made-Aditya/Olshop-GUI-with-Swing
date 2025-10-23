@@ -8,7 +8,7 @@ import java.util.List;
 public class keranjang {
     // List yang digunakan untuk menyimpan objek 'produk' yang dimasukkan ke keranjang.
     // Kita pakai ArrayList (bukan array biasa) karena ukurannya bisa bertambah/berkurang dengan mudah.
-    private List<produk> produk_keranjang;
+    private List<AbstractProduk> abstractProduk_keranjang;
     // Total harga dari semua produk yang ada di dalam keranjang.
     private int totalHarga;
     // Saldo uang yang dimiliki pengguna.
@@ -20,7 +20,7 @@ public class keranjang {
      */
     public keranjang(int saldo){
         // Inisialisasi keranjang sebagai ArrayList kosong
-        produk_keranjang = new ArrayList<>();
+        abstractProduk_keranjang = new ArrayList<>();
         totalHarga = 0; // Total harga awal pasti nol
         this.saldo = saldo; // Simpan saldo awal
     }
@@ -31,10 +31,10 @@ public class keranjang {
      * @param p Objek produk yang mau ditambahkan.
      * @return true jika berhasil ditambahkan, false jika keranjang penuh (kapasitas maks 10).
      */
-    public boolean tambahproduk_keranjang(produk p){
+    public boolean tambahproduk_keranjang(AbstractProduk p){
         // Kita batasi maksimum 10 produk di keranjang (pakai produk_keranjang.size() untuk tahu jumlahnya)
-        if (produk_keranjang.size() < 10) {
-            produk_keranjang.add(p); // Tambahkan produk ke List
+        if (abstractProduk_keranjang.size() < 10) {
+            abstractProduk_keranjang.add(p); // Tambahkan produk ke List
 
             // PENTING: Update total harga!
             totalHarga += p.getHarga_produk();
@@ -54,7 +54,7 @@ public class keranjang {
      */
     public boolean tambahproduk_keranjang(int id_produk, listProduk kategori){
         // Cari objek produk berdasarkan ID di kategori
-        produk p = kategori.getProdukById(id_produk);
+        AbstractProduk p = kategori.getProdukById(id_produk);
         if(p != null){
             // Kalau ketemu, panggil lagi metode tambahproduk_keranjang(produk p)
             return tambahproduk_keranjang(p);
@@ -70,21 +70,21 @@ public class keranjang {
      * @return true jika berhasil dihapus, false jika keranjang kosong atau produk tidak ditemukan.
      */
     public boolean hapusproduk_keranjang(int id){
-        if(produk_keranjang.isEmpty()){
+        if(abstractProduk_keranjang.isEmpty()){
             System.out.println("Keranjang kosong");
             return false;
         }
         else{
             // Loop melalui setiap produk di keranjang
-            for(int i = 0; i < produk_keranjang.size(); i++){
-                produk temp = produk_keranjang.get(i); // Ambil produk
+            for(int i = 0; i < abstractProduk_keranjang.size(); i++){
+                AbstractProduk temp = abstractProduk_keranjang.get(i); // Ambil produk
 
                 // Cek apakah ID produknya cocok
                 if(temp.getId_produk() == id){
                     // PENTING: Kurangi total harga sebelum dihapus!
                     totalHarga -= temp.getHarga_produk();
 
-                    produk_keranjang.remove(i); // Hapus produk dari List
+                    abstractProduk_keranjang.remove(i); // Hapus produk dari List
                     return true;
                 }
             }
@@ -99,7 +99,7 @@ public class keranjang {
      * @return true jika syarat pembelian terpenuhi (keranjang ada isi & saldo cukup).
      */
     public boolean beliproduk_keranjang(int pil_produk[]){
-        if(produk_keranjang.isEmpty() || saldo < totalHarga){
+        if(abstractProduk_keranjang.isEmpty() || saldo < totalHarga){
             System.out.println("Keranjang kosong atau Saldo tidak cukup");
             return false;
         }
@@ -112,9 +112,9 @@ public class keranjang {
      * Ini digunakan oleh KeranjangTabelModel untuk membaca datanya.
      * @return Array berisi semua objek produk di keranjang.
      */
-    public produk[] getProduk_keranjang(){
+    public AbstractProduk[] getProduk_keranjang(){
         // Konversi ArrayList menjadi Array biasa (wajib dilakukan untuk kompatibilitas)
-        return produk_keranjang.toArray(new produk[produk_keranjang.size()]);
+        return abstractProduk_keranjang.toArray(new AbstractProduk[abstractProduk_keranjang.size()]);
     }
 
     // --- Getter & Setter ---
@@ -149,7 +149,7 @@ public class keranjang {
      * @return Jumlah item (int).
      */
     public int getJumlahProduk_keranjang(){
-        return produk_keranjang.size();
+        return abstractProduk_keranjang.size();
     }
 
     /**
@@ -161,7 +161,7 @@ public class keranjang {
         String str = "Isi Keranjang Anda:\n";
         str += "Saldo Anda: " + saldo + "\n";
         int index = 1;
-        for(produk temp : produk_keranjang){
+        for(AbstractProduk temp : abstractProduk_keranjang){
             str += index + ". " + temp.getNama_produk() + " - ID: " + temp.getId_produk() + " - Harga: " + temp.getHarga_produk() + "\n";
             index++;
         }

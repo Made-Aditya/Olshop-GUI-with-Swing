@@ -8,6 +8,10 @@ import Classes.elements.KeranjangTabelModel;
 import Classes.proses.CartActionController;
 import Classes.proses.TableConfigurator;
 import Classes.proses.ProductDataFactory; // Import ProductDataFactory
+import Classes.proses.ProductDataFactory;
+import Classes.kelas.AbstractProduk; // <-- Pastikan ini ada
+import Classes.kelas.ElektronikProduk; // Tambahkan import ini
+import Classes.kelas.BukuProduk;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -98,7 +102,15 @@ public class Main extends JFrame {
     public JTable getListProdukTable() {
         return listProdukTable;
     }
+    /** Mengembalikan referensi ke jsWelcome (untuk mendapatkan nama kategori). */
+    public JLabel getJsWelcome() { // <<< Tambahkan ini
+        return jsWelcome;
+    }
 
+    /** Mengembalikan Map kategori (untuk mendapatkan listProduk aktif). */
+    public Map<String, listProduk> getCategories() { // <<< Tambahkan ini
+        return categories;
+    }
     /** Mengembalikan referensi ke tableKeranjang untuk diakses TableConfigurator. */
     public JTable getTableKeranjang() {
         return tableKeranjang;

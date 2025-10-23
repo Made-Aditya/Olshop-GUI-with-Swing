@@ -5,7 +5,7 @@ import Classes.Main;
 import Classes.elements.ButtonEditor;
 import Classes.kelas.keranjang;
 import Classes.elements.KeranjangTabelModel;
-import Classes.kelas.produk;
+import Classes.kelas.AbstractProduk;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -37,14 +37,39 @@ public class CartActionController {
         int modelRow = listProdukTable.convertRowIndexToModel(selectedRow);
 
         Integer id_produk = (Integer) listProdukTable.getModel().getValueAt(modelRow, 0);
-        String nama_produk = (String) listProdukTable.getModel().getValueAt(modelRow, 1);
-        Long harga_produk = (Long) listProdukTable.getModel().getValueAt(modelRow, 2);
 
-        produk p = new produk(nama_produk, id_produk, harga_produk.intValue());
+        // Dapatkan nama kategori aktif dan objek listProduk aktif
+        String kategoriTeksPenuh = mainFrame.getJsWelcome().getText();
+        String nama_kategori_aktif_mentah = kategoriTeksPenuh.replace("Daftar Produk Kategori: ", "");
 
-        if (userKeranjang.tambahproduk_keranjang(p)) {
-            JOptionPane.showMessageDialog(mainFrame, nama_produk + " berhasil ditambahkan.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-            mainFrame.updateKeranjangView(); // Panggil melalui referensi Main
+        // Konversi ke format yang sama dengan kunci Map (misal: "ELEKTRONIK" -> "Elektronik")
+        String nama_kategori_dicari;
+        if (nama_kategori_aktif_mentah.length() > 0) {
+            // Ambil huruf pertama dan jadikan kapital, sisa string jadikan lowercase
+            nama_kategori_dicari = nama_kategori_aktif_mentah.substring(0, 1).toUpperCase() +
+                    nama_kategori_aktif_mentah.substring(1).toLowerCase();
+        } else {
+            nama_kategori_dicari = "";
+        }
+
+        Classes.kelas.listProduk kategoriAktif = mainFrame.getCategories().get(nama_kategori_dicari);
+
+        if (kategoriAktif == null) {
+            JOptionPane.showMessageDialog(mainFrame, "Kategori aktif tidak ditemukan.", "Gagal", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Ambil objek produk konkret (misal ElektronikProduk) dari listProduk
+        AbstractProduk produkYangDipilih = kategoriAktif.getProdukById(id_produk);
+        if (produkYangDipilih == null) {
+            JOptionPane.showMessageDialog(mainFrame, "Gagal mendapatkan detail produk.", "Gagal", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Tambahkan ke keranjang
+        if (userKeranjang.tambahproduk_keranjang(produkYangDipilih)) {
+            JOptionPane.showMessageDialog(mainFrame, produkYangDipilih.getNama_produk() + " berhasil ditambahkan.", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            mainFrame.updateKeranjangView();
         } else {
             JOptionPane.showMessageDialog(mainFrame, "Keranjang penuh atau gagal.", "Gagal", JOptionPane.ERROR_MESSAGE);
         }
@@ -64,7 +89,7 @@ public class CartActionController {
         long totalCheckedPrice = 0;
         for (int id : checkedIds) {
             for (int i = 0; i < userKeranjang.getJumlahProduk_keranjang(); i++) {
-                produk p = userKeranjang.getProduk_keranjang()[i];
+                AbstractProduk p = userKeranjang.getProduk_keranjang()[i];
                 if (p != null && p.getId_produk() == id) {
                     totalCheckedPrice += p.getHarga_produk();
                     break;

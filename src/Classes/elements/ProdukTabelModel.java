@@ -1,7 +1,7 @@
 package Classes.elements;
 
 import Classes.kelas.listProduk;
-import Classes.kelas.produk;
+import Classes.kelas.AbstractProduk;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -65,7 +65,7 @@ public class ProdukTabelModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col){
         // Langkah 1: Ambil objek produk di baris (row) yang diminta.
-        produk p = dataProduk.getProduk(row);
+        AbstractProduk p = dataProduk.getProduk(row);
 
         if (p == null) return null;
 

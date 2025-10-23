@@ -1,7 +1,7 @@
 package Classes.elements;
 
 import Classes.kelas.keranjang;
-import Classes.kelas.produk;
+import Classes.kelas.AbstractProduk;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class KeranjangTabelModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col) {
         // Mengakses produk dari keranjang berdasarkan indeks baris
-        produk p = keranjangData.getProduk_keranjang()[row];
+        AbstractProduk p = keranjangData.getProduk_keranjang()[row];
 
         if (p == null) return null;
 

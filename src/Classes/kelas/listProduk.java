@@ -4,7 +4,7 @@ package Classes.kelas;
 // dalam sebuah array, dan juga menyimpan nama kategori (misalnya: "Elektronik").
 public class listProduk {
     // Array tempat semua objek produk akan disimpan. Ingat, array punya kapasitas tetap!
-    private produk produk[];
+    private AbstractProduk AbstractProduk[];
     // Nama dari kategori produk ini (misalnya: "Elektronik", "Buku")
     private String namaKategori;
     // Counter untuk melacak berapa banyak produk yang SUDAH terisi di dalam array.
@@ -14,7 +14,7 @@ public class listProduk {
     // --- Konstruktor Standar ---
     public listProduk(){
         // Konstruktor default: kapasitas array produk kita atur 10.
-        produk = new produk[10];
+        AbstractProduk = new AbstractProduk[10];
         jumlahProduk = 0; // Awalnya, belum ada produk
     }
 
@@ -25,7 +25,7 @@ public class listProduk {
      * @param namaKategori Nama kategori ini.
      */
     public listProduk(int kapasitas, String namaKategori){
-        produk = new produk[kapasitas];
+        AbstractProduk = new AbstractProduk[kapasitas];
         jumlahProduk = 0;
         this.namaKategori = namaKategori;
     }
@@ -37,10 +37,10 @@ public class listProduk {
      * @param p Objek produk yang akan ditambahkan.
      * @return true jika berhasil ditambahkan, false jika array sudah penuh (kapasitas terlampaui).
      */
-    public boolean tambahProduk(produk p){
+    public boolean tambahProduk(AbstractProduk p){
         // Cek: Apakah jumlah produk saat ini (jumlahProduk) masih kurang dari kapasitas array (produk.length)?
-        if(jumlahProduk < produk.length){
-            produk[jumlahProduk] = p; // Tambahkan produk di posisi saat ini
+        if(jumlahProduk < AbstractProduk.length){
+            AbstractProduk[jumlahProduk] = p; // Tambahkan produk di posisi saat ini
             jumlahProduk++; // Naikkan counternya (jumlah produk sekarang bertambah satu)
             return true;
         } else {
@@ -58,18 +58,18 @@ public class listProduk {
     public boolean hapusProduk(int id){
         // Loop melalui produk yang sudah terisi (sampai jumlahProduk saja)
         for(int i = 0; i < jumlahProduk; i++){
-            produk temp = produk[i];
+            AbstractProduk temp = AbstractProduk[i];
             // Cek apakah ID produk saat ini sama dengan ID yang mau dihapus
             if(temp.getId_produk() == id){
 
                 // --- Logika Geser Array (Shifting) ---
                 // Loop untuk menggeser semua elemen di belakang ke kiri satu posisi
                 for(int j = i; j < jumlahProduk - 1; j++){
-                    produk[j] = produk[j + 1];
+                    AbstractProduk[j] = AbstractProduk[j + 1];
                 }
 
                 // Set posisi terakhir yang tadinya terisi menjadi null
-                produk[jumlahProduk - 1] = null;
+                AbstractProduk[jumlahProduk - 1] = null;
                 jumlahProduk--; // Kurangi hitungan produk yang terisi
                 return true;
             }
@@ -82,13 +82,13 @@ public class listProduk {
      * @param nama Kata kunci pencarian.
      * @return Array berisi hasil produk yang cocok.
      */
-    public produk[] searchProduk(String nama){
+    public AbstractProduk[] searchProduk(String nama){
         // Kita buat array hasil sementara dengan ukuran maksimum (seukuran array produk)
-        produk[] hasil = new produk[produk.length];
+        AbstractProduk[] hasil = new AbstractProduk[AbstractProduk.length];
         int index = 0; // Counter untuk array 'hasil'
 
         for(int i = 0; i < jumlahProduk; i++){
-            produk temp = produk[i];
+            AbstractProduk temp = AbstractProduk[i];
             // Konversi nama produk dan kata kunci ke huruf kecil (toLowerCase) agar pencarian case-insensitive
             if(temp.getNama_produk().toLowerCase().contains(nama.toLowerCase())){
                 hasil[index] = temp;
@@ -99,7 +99,7 @@ public class listProduk {
         // --- Mencetak Hasil ke Console (Untuk debugging) ---
         System.out.println("Hasil pencarian untuk '"+ nama +"' :");
         for(int i = 0; i < index; i++){
-            produk temp = hasil[i];
+            AbstractProduk temp = hasil[i];
             System.out.println("- " + temp.getNama_produk() + " (ID: " + temp.getId_produk() + ", Harga: " + temp.getHarga_produk() + ")");
         }
 
@@ -111,9 +111,9 @@ public class listProduk {
      * @param id_produk ID produk yang dicari.
      * @return Objek produk jika ditemukan, atau null jika tidak ada.
      */
-    public produk getProdukById(int id_produk){
+    public AbstractProduk getProdukById(int id_produk){
         for(int i = 0; i < jumlahProduk; i++){
-            produk temp = produk[i];
+            AbstractProduk temp = AbstractProduk[i];
             if(temp.getId_produk() == id_produk){
                 return temp;
             }
@@ -145,10 +145,10 @@ public class listProduk {
      * @param index Posisi produk yang dicari di array.
      * @return Objek produk, atau null jika indeks tidak valid.
      */
-    public produk getProduk(int index){
+    public AbstractProduk getProduk(int index){
         // Pemeriksaan batas dasar agar tidak error (ArrayIndexOutOfBoundsException)
         if (index >= 0 && index < jumlahProduk) {
-            return produk[index];
+            return AbstractProduk[index];
         }
         return null;
     }
@@ -162,7 +162,7 @@ public class listProduk {
     public String toString(){
         String str = "Daftar Produk Kategori "+ namaKategori + " :\n";
         for(int i = 0; i < jumlahProduk; i++){
-            produk temp = produk[i];
+            AbstractProduk temp = AbstractProduk[i];
             str += (i+1) + ". " + temp.getNama_produk() + " - ID: " + temp.getId_produk() + " - Harga: " + temp.getHarga_produk() + "\n";
         }
         return str;
